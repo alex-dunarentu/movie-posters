@@ -52,5 +52,8 @@
   },
   "devDependencies": {
     "@types/redux-logger": "^3.0.9"
+  },
+  "jest": {
+    "transformIgnorePatterns": ["node_modules\/(?!axios)"]
   }
 }

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithProviders } from '../../utils/test-utils';
 import Gallery from './gallery.component';
 
 const movies = [
@@ -20,13 +21,17 @@ const movies = [
 
 describe('Gallery Component', () => {
   it('renders movie list with correct titles and years', () => {
-    render(
-      <Gallery
-        sortOption="Title"
-        orderOption="Ascending"
-        setSortOption={() => {}}
-        setOrderOption={() => {}}
-      />
+    renderWithProviders(
+      <Gallery sortOption="Title" orderOption="Ascending" setSortOption={() => {}} setOrderOption={() => {}} />,
+      {
+        preloadedState: {
+          movies: {
+            cachedMovies: { Movie: movies },
+            loading: false,
+            movies: movies,
+          },
+        },
+      }
     );
 
     // Check if all movies are rendered

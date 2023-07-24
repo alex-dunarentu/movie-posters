@@ -8,32 +8,19 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
-import { Movie } from '../../types/movie';
 import { SortOption, OrderOption } from '../../types/sort';
 
 import SortGallery from '../sort-gallery/sort-gallery.component';
 import Placeholder from '../../assets/placeholder.jpg';
+
+import { sortMovies } from '../../utils/sort-movies/sort-movies';
 
 type GalleryProps = SortOption & OrderOption;
 
 const Gallery: FC<GalleryProps> = ({ orderOption, setOrderOption, sortOption, setSortOption }) => {
   const movies = useAppSelector(selectMovies);
 
-  const sortMovies = (movies: Movie[]) => {
-    const sortedMovies = [...movies];
-    sortedMovies.sort((a, b) => {
-      const sortOrder = orderOption === 'Ascending' ? 1 : -1;
-      if (sortOption === 'Year') {
-        return sortOrder * (parseInt(a.Year) - parseInt(b.Year));
-      } else if (sortOption === 'Title') {
-        return sortOrder * a.Title.localeCompare(b.Title);
-      }
-      return 0;
-    });
-    return sortedMovies;
-  };
-
-  const sortedMovies = useMemo(() => sortMovies(movies), [movies, sortOption, orderOption]);
+  const sortedMovies = useMemo(() => sortMovies(movies, sortOption, orderOption), [movies, sortOption, orderOption]);
 
   const isScreenSmallerThan540px = useMediaQuery('(max-width:540px)');
   const imageListWidth = isScreenSmallerThan540px ? '100%' : 500;

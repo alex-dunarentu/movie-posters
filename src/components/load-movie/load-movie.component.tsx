@@ -17,10 +17,18 @@ const LoadMovie: FC<LoadMovieProps> = ({ title }) => {
   const cachedMovies = useAppSelector(selectCachedMovies);
   const dispatch = useAppDispatch();
 
+  const handleClick = (title: string) => () => {
+    if (cachedMovies[title]) {
+      dispatch(setMovies(cachedMovies[title]));
+    } else {
+      dispatch(fetchMovies(title));
+    }
+  };
+
   return (
     <Button
       startIcon={cachedMovies[title] ? <FileDownloadDoneIcon /> : <FileDownloadIcon />}
-      onClick={() => (cachedMovies[title] ? dispatch(setMovies(cachedMovies[title])) : dispatch(fetchMovies(title)))}
+      onClick={handleClick(title)}
       key={title}
     >
       {title}
